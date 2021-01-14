@@ -1,0 +1,4 @@
+enum TipoAcaoEnum {
+  alterar,
+  incluir,
+}

@@ -1,0 +1,66 @@
+
+Estrutura Modelo para Apps Flutter com BLOC e PROVIDER
+=========================================================
+
+- lib
+  - blocs
+    - lancamento.bloc.dart
+  - models
+    - entities
+      - lancamento.entity.dart
+    - objects
+      - resumo.object.dart
+    - utils
+      - constantes.util.dart
+  - pages
+    - Inicio
+      - inicio.page.dart
+    - Lancamentos
+      - lancamentos.list.page.dart
+      - lancamentos.form.page.dart
+    - Progressao
+      - progressao.page.dart
+  - repositories
+    - lancamento.respository.dart
+  - services
+    - lancamento.service.dart
+  - widgets
+    - template
+      - buttons
+      - cards
+      - icons
+      - colors
+      - backgrounds
+      - progressbar
+    - charts
+
+No modelo de estrutura criado acima, a ideia é organizar o projeto de forma que facilite a manutenção 
+e compreensão de todos os widgets e lógica de aplicação.
+
+- Blocs: O diretório "blocs" deverá ser utilizado para criação dos "BLoC" (Business Logic of Componets).
+Os blocs podem ser criados por entidade para facilitar a reutilização dos dados e compartilhamento 
+entre todas as páginas e widgets do app.
+
+- Models: O diretório "models" deverá ser dividido em dois diretórios; 
+1. "entities" para entidades de negócio.
+2. "objects" para objetos de uso geral na UI, exerce a função de uma "View Model".
+3. "utils" para criação de classes utilitárias de uso geral.
+
+- Pages: O diretório "pages" deverá conter as pastas de acordo com o nome de cada "tela" ou "aba" 
+do aplicativo, e cada página deve conter os arquivos; ".page.dart", ".list.page.dart" e ".form.page.dart", 
+o padrão criado para a nomenclatura dos arquivos de páginas é o seguinte:
+1. Para páginas de listagem de registros, o nome do arquivo deve ser: <NomeDaPagina>.list.page.dart
+2. Para páginas de edição de registro (formulário), o nome deve ser: <NomeDaPagina>.form.page.dart
+3. Para páginas genéricas que não são "Lista" nem "Edição", o nome deve ser: <NomeDaPagina>.page.dart
+
+- Repositories: O diretório "repositories" deverá conter classes de acesso a banco de dados local, como 
+SQLite. Deverá conter também arquivos de configuração e criação do banco de dados local.
+
+- Services: O diretório "services" deverá conter os serviços (bridge) de integração com APIs externas,  
+ ou seja, diferente do diretório repositories que acessa dados em base local no dispositivo, a "services" 
+ será para conexões com APIs na web. Cada entidade de negócio deverá ter seu arquivo, que terá a seguinte 
+nomenclatura; <NomeDaEntidade>.service.dart
+
+- Widgets: O diretório "widgets" deverá conter todos os componentes (widgets) reutilizáveis da aplicação, 
+e deverão ser separados por categorias, como por exemplo; "template", "charts". A nomenclatura deve seguir 
+o seguinte padrão <NomeDoWidget>.widget.dart
