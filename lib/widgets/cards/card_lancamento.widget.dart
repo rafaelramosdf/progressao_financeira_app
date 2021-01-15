@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:progressao_financeira/blocs/lancamento.bloc.dart';
+import 'package:get/get.dart';
+import 'package:progressao_financeira/controllers/lancamento.controller.dart';
 import 'package:progressao_financeira/models/entities/lancamento.entity.dart';
-import 'package:progressao_financeira/models/enums/tipoAcao.enum.dart';
-import 'package:progressao_financeira/views/lancamentos/lancamento.form.view.dart';
+import 'package:progressao_financeira/views/lancamentos/alteracao_lancamento.view.dart';
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
-import 'package:provider/provider.dart';
 
 class CardLancamentoGO extends StatefulWidget {
   final LancamentoEntity lancamento;
   CardLancamentoGO({this.lancamento});
+
+  final _controller = Get.put(LancamentoController());
 
   @override
   _CardLancamentoGOState createState() => _CardLancamentoGOState();
@@ -31,17 +32,8 @@ class _CardLancamentoGOState extends State<CardLancamentoGO> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Provider.of<LancamentoBloc>(context)
-            .editarLancamento(lancamento: widget.lancamento);
-
-        Navigator.push(
-          context,
-          new MaterialPageRoute(
-            builder: (context) => LancamentoFormView(
-              acao: TipoAcaoEnum.alterar,
-            ),
-          ),
-        );
+        widget._controller.editarLancamento(lancamento: widget.lancamento);
+        Get.to(AlteracaoLancamentoView());
       },
       child: Card(
         elevation: 1.0,

@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   fl_chart: ^0.1.6
   sqflite: any
+  path_provider: any
   flutter_masked_text: ^0.8.0
   intl: any
 

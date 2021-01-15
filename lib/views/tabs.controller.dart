@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:progressao_financeira/blocs/lancamento.bloc.dart';
-import 'package:progressao_financeira/models/enums/tipoAcao.enum.dart';
+import 'package:get/get.dart';
+import 'package:progressao_financeira/controllers/_global.controller.dart';
+import 'package:progressao_financeira/controllers/lancamento.controller.dart';
+import 'package:progressao_financeira/views/lancamentos/inclusao_lancamento.view.dart';
 import 'package:progressao_financeira/views/lancamentos/lancamento.list.view.dart';
 import 'package:progressao_financeira/views/progressao/progressao.view.dart';
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
 import 'package:progressao_financeira/widgets/icones/icones.widget.dart';
-import 'package:provider/provider.dart';
-
-import 'lancamentos/lancamento.form.view.dart';
 import 'resumo/resumo.view.dart';
 
 class TabsController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _controller = Get.put(LancamentoController());
+    final _globalController = Get.put(GlobalController());
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -33,33 +35,29 @@ class TabsController extends StatelessWidget {
                 flex: 8,
               ),
               Expanded(
-                child: Consumer<LancamentoBloc>(
-                  builder: (context, lancamentoBloc, child) =>
-                      PopupMenuButton<int>(
-                    initialValue: lancamentoBloc.anoFiltro,
-                    child: Text(
-                      "${lancamentoBloc.anoFiltro}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                      ),
-                      textAlign: TextAlign.right,
+                child: PopupMenuButton<int>(
+                  initialValue: _globalController.anoFiltro,
+                  child: Text(
+                    "${_globalController.anoFiltro}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
                     ),
-                    onSelected: (int ano) {
-                      lancamentoBloc.mudarFiltroAno(ano: ano);
-                    },
-                    itemBuilder: (BuildContext context) =>
-                        <PopupMenuEntry<int>>[
-                      PopupMenuItem<int>(
-                          value: DateTime.now().year - 1,
-                          child: Text("${DateTime.now().year - 1}")),
-                      PopupMenuItem<int>(
-                          value: DateTime.now().year,
-                          child: Text("${DateTime.now().year}")),
-                      PopupMenuItem<int>(
-                          value: DateTime.now().year + 1,
-                          child: Text("${DateTime.now().year + 1}")),
-                    ],
+                    textAlign: TextAlign.right,
                   ),
+                  onSelected: (int ano) {
+                    _controller.mudarFiltroAno(ano: ano);
+                  },
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+                    PopupMenuItem<int>(
+                        value: DateTime.now().year - 1,
+                        child: Text("${DateTime.now().year - 1}")),
+                    PopupMenuItem<int>(
+                        value: DateTime.now().year,
+                        child: Text("${DateTime.now().year}")),
+                    PopupMenuItem<int>(
+                        value: DateTime.now().year + 1,
+                        child: Text("${DateTime.now().year + 1}")),
+                  ],
                 ),
                 flex: 2,
               ),
@@ -91,15 +89,8 @@ class TabsController extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Provider.of<LancamentoBloc>(context, listen: false)
-                .novoLancamento();
-            Navigator.push(
-              context,
-              new MaterialPageRoute(
-                builder: (context) =>
-                    LancamentoFormView(acao: TipoAcaoEnum.incluir),
-              ),
-            );
+            _controller.novoLancamento();
+            Get.to(InclusaoLancamentoView());
           },
           tooltip: 'Adicionar Despesa / Receita',
           child: Icon(Icons.add),

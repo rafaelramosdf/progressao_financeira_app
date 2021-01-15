@@ -1,7 +1,10 @@
+import 'package:get/get.dart';
 import 'package:progressao_financeira/models/entities/lancamento.entity.dart';
 import 'package:progressao_financeira/repositories/_repository.dart';
 
 class LancamentoRepository {
+  static LancamentoRepository get instance => Get.find<LancamentoRepository>();
+
   static final String tabelaLancamento = "Lancamento";
   static final String sqlCriarTabelaLancamento =
       "CREATE TABLE $tabelaLancamento ("
