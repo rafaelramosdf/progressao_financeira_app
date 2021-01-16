@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:progressao_financeira/controllers/_global.controller.dart';
 import 'package:progressao_financeira/controllers/lancamento.controller.dart';
 import 'package:progressao_financeira/models/entities/lancamento.entity.dart';
 import 'package:progressao_financeira/widgets/backgrounds/fundo_degrade.widget.dart';
@@ -8,13 +7,15 @@ import 'package:progressao_financeira/widgets/cards/card_lancamento.widget.dart'
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
 
 class LancamentoListView extends StatelessWidget {
+  final _controller = Get.find<LancamentoController>();
+
   @override
   Widget build(BuildContext context) {
-    final _controller = Get.put(LancamentoController());
-    final _globalController = Get.put(GlobalController());
+    _controller.buscarLancamentos();
 
     return FundoDegradeGO(
-        child: _globalController.carregando
+      child: Obx(
+        () => _controller.carregando
             ? Center(child: CircularProgressIndicator())
             : Stack(
                 children: <Widget>[
@@ -63,7 +64,7 @@ class LancamentoListView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "${_globalController.totalRecebidoMes}",
+                                "${_controller.totalRecebidoMes}",
                                 style: TextStyle(
                                   color: CoresGO.verde,
                                   fontSize: 16.0,
@@ -85,7 +86,7 @@ class LancamentoListView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "${_globalController.totalGastoMes}",
+                                "${_controller.totalGastoMes}",
                                 style: TextStyle(
                                   color: CoresGO.rosa,
                                   fontSize: 16.0,
@@ -107,7 +108,7 @@ class LancamentoListView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "${_globalController.totalSaldoMes}",
+                                "${_controller.totalSaldoMes}",
                                 style: TextStyle(
                                   color: CoresGO.branco,
                                   fontSize: 16.0,
@@ -121,7 +122,9 @@ class LancamentoListView extends StatelessWidget {
                     ),
                   ),
                 ],
-              ));
+              ),
+      ),
+    );
   }
 
   final List<PopupMenuEntry<int>> _popUpItemMes = [

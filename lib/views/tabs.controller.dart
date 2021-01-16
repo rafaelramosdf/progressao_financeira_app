@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:progressao_financeira/controllers/_global.controller.dart';
 import 'package:progressao_financeira/controllers/lancamento.controller.dart';
 import 'package:progressao_financeira/views/lancamentos/inclusao_lancamento.view.dart';
 import 'package:progressao_financeira/views/lancamentos/lancamento.list.view.dart';
@@ -10,11 +9,10 @@ import 'package:progressao_financeira/widgets/icones/icones.widget.dart';
 import 'resumo/resumo.view.dart';
 
 class TabsController extends StatelessWidget {
+  final _controller = Get.put(LancamentoController());
+
   @override
   Widget build(BuildContext context) {
-    final _controller = Get.put(LancamentoController());
-    final _globalController = Get.put(GlobalController());
-
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -34,32 +32,35 @@ class TabsController extends StatelessWidget {
                 ),
                 flex: 8,
               ),
-              Expanded(
-                child: PopupMenuButton<int>(
-                  initialValue: _globalController.anoFiltro,
-                  child: Text(
-                    "${_globalController.anoFiltro}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
+              Obx(
+                () => Expanded(
+                  child: PopupMenuButton<int>(
+                    initialValue: _controller.anoFiltro,
+                    child: Text(
+                      "${_controller.anoFiltro}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                      ),
+                      textAlign: TextAlign.right,
                     ),
-                    textAlign: TextAlign.right,
+                    onSelected: (int ano) {
+                      _controller.mudarFiltroAno(ano: ano);
+                    },
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<int>>[
+                      PopupMenuItem<int>(
+                          value: DateTime.now().year - 1,
+                          child: Text("${DateTime.now().year - 1}")),
+                      PopupMenuItem<int>(
+                          value: DateTime.now().year,
+                          child: Text("${DateTime.now().year}")),
+                      PopupMenuItem<int>(
+                          value: DateTime.now().year + 1,
+                          child: Text("${DateTime.now().year + 1}")),
+                    ],
                   ),
-                  onSelected: (int ano) {
-                    _controller.mudarFiltroAno(ano: ano);
-                  },
-                  itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
-                    PopupMenuItem<int>(
-                        value: DateTime.now().year - 1,
-                        child: Text("${DateTime.now().year - 1}")),
-                    PopupMenuItem<int>(
-                        value: DateTime.now().year,
-                        child: Text("${DateTime.now().year}")),
-                    PopupMenuItem<int>(
-                        value: DateTime.now().year + 1,
-                        child: Text("${DateTime.now().year + 1}")),
-                  ],
+                  flex: 2,
                 ),
-                flex: 2,
               ),
             ],
           ),

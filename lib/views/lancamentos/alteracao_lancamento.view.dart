@@ -9,34 +9,29 @@ import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
 import 'package:progressao_financeira/widgets/datepicker/date_select.widget.dart';
 import 'package:progressao_financeira/widgets/icones/icones.widget.dart';
 
-class AlteracaoLancamentoView extends StatefulWidget {
-  final _controller = Get.put(LancamentoController());
-
-  @override
-  _AlteracaoLancamentoViewState createState() =>
-      _AlteracaoLancamentoViewState();
-}
-
-class _AlteracaoLancamentoViewState extends State<AlteracaoLancamentoView> {
-  final _formKey = GlobalKey<FormState>();
-  MoneyMaskedTextController _valorController = new MoneyMaskedTextController();
-  TextEditingController _categoriaController = new TextEditingController();
-  TextEditingController _contaController = new TextEditingController();
-  TextEditingController _vencimentoController = new TextEditingController();
-  TextEditingController _descricaoController = new TextEditingController();
-  TipoLancamentoEnum _tipoLancamento = TipoLancamentoEnum.despesa;
+class AlteracaoLancamentoView extends StatelessWidget {
+  final _controller = Get.find<LancamentoController>();
 
   @override
   Widget build(BuildContext context) {
-    _categoriaController.text = widget._controller.edicaoLancamento.categoria;
-    _contaController.text = widget._controller.edicaoLancamento.conta;
-    _descricaoController.text = widget._controller.edicaoLancamento.descricao;
-    _tipoLancamento = widget._controller.edicaoLancamento.gasto
+    final _formKey = GlobalKey<FormState>();
+
+    MoneyMaskedTextController _valorController =
+        new MoneyMaskedTextController();
+    TextEditingController _categoriaController = new TextEditingController();
+    TextEditingController _contaController = new TextEditingController();
+    TextEditingController _vencimentoController = new TextEditingController();
+    TextEditingController _descricaoController = new TextEditingController();
+
+    _categoriaController.text = _controller.edicaoLancamento.categoria;
+    _contaController.text = _controller.edicaoLancamento.conta;
+    _descricaoController.text = _controller.edicaoLancamento.descricao;
+    _controller.tipoLancamento = _controller.edicaoLancamento.gasto
         ? TipoLancamentoEnum.despesa
         : TipoLancamentoEnum.receita;
-    _valorController.text = widget._controller.edicaoLancamento.valor;
+    _valorController.text = _controller.edicaoLancamento.valor;
     _vencimentoController.text =
-        new DateFormat.yMd().format(widget._controller.edicaoLancamento.data);
+        new DateFormat.yMd().format(_controller.edicaoLancamento.data);
 
     return Scaffold(
         appBar: AppBar(
@@ -91,7 +86,7 @@ class _AlteracaoLancamentoViewState extends State<AlteracaoLancamentoView> {
                                 return null;
                             },
                             onSaved: (value) {
-                              widget._controller.edicaoLancamento.valor = value;
+                              _controller.edicaoLancamento.valor = value;
                             },
                           ),
                         ),
@@ -108,14 +103,16 @@ class _AlteracaoLancamentoViewState extends State<AlteracaoLancamentoView> {
                                 fontSize: 18.0,
                               ),
                             ),
-                            leading: Radio(
-                              value: TipoLancamentoEnum.despesa,
-                              groupValue: _tipoLancamento,
-                              onChanged: (TipoLancamentoEnum value) {
-                                _tipoLancamento = value;
-                                widget._controller.edicaoLancamento.gasto =
-                                    value == TipoLancamentoEnum.despesa;
-                              },
+                            leading: Obx(
+                              () => Radio(
+                                value: TipoLancamentoEnum.despesa,
+                                groupValue: _controller.tipoLancamento,
+                                onChanged: (TipoLancamentoEnum value) {
+                                  _controller.tipoLancamento = value;
+                                  _controller.edicaoLancamento.gasto =
+                                      value == TipoLancamentoEnum.despesa;
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -128,14 +125,16 @@ class _AlteracaoLancamentoViewState extends State<AlteracaoLancamentoView> {
                                 fontSize: 18.0,
                               ),
                             ),
-                            leading: Radio(
-                              value: TipoLancamentoEnum.receita,
-                              groupValue: _tipoLancamento,
-                              onChanged: (TipoLancamentoEnum value) {
-                                _tipoLancamento = value;
-                                widget._controller.edicaoLancamento.gasto =
-                                    value == TipoLancamentoEnum.despesa;
-                              },
+                            leading: Obx(
+                              () => Radio(
+                                value: TipoLancamentoEnum.receita,
+                                groupValue: _controller.tipoLancamento,
+                                onChanged: (TipoLancamentoEnum value) {
+                                  _controller.tipoLancamento = value;
+                                  _controller.edicaoLancamento.gasto =
+                                      value == TipoLancamentoEnum.despesa;
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -158,8 +157,7 @@ class _AlteracaoLancamentoViewState extends State<AlteracaoLancamentoView> {
                                 return null;
                             },
                             onSaved: (value) {
-                              widget._controller.edicaoLancamento.categoria =
-                                  value;
+                              _controller.edicaoLancamento.categoria = value;
                             },
                           ),
                         ),
@@ -183,7 +181,7 @@ class _AlteracaoLancamentoViewState extends State<AlteracaoLancamentoView> {
                                 return null;
                             },
                             onSaved: (value) {
-                              widget._controller.edicaoLancamento.conta = value;
+                              _controller.edicaoLancamento.conta = value;
                             },
                           ),
                         ),
@@ -206,7 +204,7 @@ class _AlteracaoLancamentoViewState extends State<AlteracaoLancamentoView> {
                                   await DateSelectWidget.selectDate(context);
                               _vencimentoController.text =
                                   new DateFormat.yMd().format(date);
-                              widget._controller.edicaoLancamento.data = date;
+                              _controller.edicaoLancamento.data = date;
                             },
                           ),
                         ),
@@ -224,8 +222,7 @@ class _AlteracaoLancamentoViewState extends State<AlteracaoLancamentoView> {
                               hintText: "Descrição...",
                             ),
                             onSaved: (value) {
-                              widget._controller.edicaoLancamento.descricao =
-                                  value;
+                              _controller.edicaoLancamento.descricao = value;
                             },
                           ),
                         ),
@@ -240,17 +237,17 @@ class _AlteracaoLancamentoViewState extends State<AlteracaoLancamentoView> {
           onPressed: () {
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
-              widget._controller.salvarAlteracaoLancamento().then((r) {
+              _controller.salvarAlteracaoLancamento().then((r) {
                 if (r > 0) {
+                  _controller.buscarLancamentos();
                   Navigator.pop(context);
-                  widget._controller.buscarLancamentos();
+                  Get.snackbar(
+                    "Sucesso!",
+                    "Lançamento alterado com sucesso!",
+                    backgroundColor: Colors.greenAccent,
+                  );
                 }
               });
-              Scaffold.of(context).showSnackBar(
-                new SnackBar(
-                  content: Text("Lançamento salvo com sucesso!"),
-                ),
-              );
             }
           },
           tooltip: 'Salvar Despesa / Receita',

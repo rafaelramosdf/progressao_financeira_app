@@ -5,8 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:progressao_financeira/routes/app_pages.dart';
 import 'package:progressao_financeira/views/tabs.controller.dart';
 
-import 'controllers/_global.controller.dart';
-
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

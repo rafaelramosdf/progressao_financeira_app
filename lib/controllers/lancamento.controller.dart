@@ -1,13 +1,12 @@
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
-import 'package:progressao_financeira/controllers/_global.controller.dart';
+import 'package:progressao_financeira/controllers/base/base.controller.dart';
 import 'package:progressao_financeira/models/entities/lancamento.entity.dart';
 import 'package:progressao_financeira/models/utils/uuid.util.dart';
 import 'package:progressao_financeira/repositories/lancamento.repository.dart';
 
-class LancamentoController extends GetxController {
+class LancamentoController extends BaseController {
   final _repository = Get.put(LancamentoRepository());
-  final _globalController = Get.put(GlobalController());
 
   List<LancamentoEntity> _listaLancamentos = List<LancamentoEntity>().obs;
   List<LancamentoEntity> get listaLancamentos => this._listaLancamentos;
@@ -20,10 +19,10 @@ class LancamentoController extends GetxController {
       this._edicaoLancamento.value = value;
 
   void buscarLancamentos() {
-    _globalController.carregando = true;
+    this.carregando = true;
     _repository.listarTodos().then((r) {
       listaLancamentos = r;
-      _globalController.carregando = false;
+      this.carregando = false;
     });
   }
 
@@ -43,7 +42,7 @@ class LancamentoController extends GetxController {
   }
 
   Future<int> salvarNovoLancamento() {
-    _globalController.carregando = true;
+    this.carregando = true;
     return _repository.inserir(edicaoLancamento);
   }
 
@@ -52,17 +51,17 @@ class LancamentoController extends GetxController {
   }
 
   Future<int> salvarAlteracaoLancamento() {
-    _globalController.carregando = true;
+    this.carregando = true;
     return _repository.alterar(edicaoLancamento);
   }
 
   void mudarFiltroAno({int ano}) {
-    _globalController.anoFiltro = ano;
+    this.anoFiltro = ano;
     buscarLancamentos();
   }
 
   void mudarFiltroMes({int mes}) {
-    _globalController.mesFiltro = mes;
+    this.mesFiltro = mes;
     buscarLancamentos();
   }
 }
