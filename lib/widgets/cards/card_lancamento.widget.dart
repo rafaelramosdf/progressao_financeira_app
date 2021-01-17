@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progressao_financeira/controllers/lancamento.controller.dart';
 import 'package:progressao_financeira/models/entities/lancamento.entity.dart';
-import 'package:progressao_financeira/views/lancamentos/alteracao_lancamento.view.dart';
+import 'package:progressao_financeira/views/lancamento/alteracao_lancamento.view.dart';
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
 
 class CardLancamentoGO extends StatefulWidget {
@@ -21,7 +21,7 @@ class _CardLancamentoGOState extends State<CardLancamentoGO> {
   @override
   void initState() {
     if (widget.lancamento.gasto)
-      _corTextoCategoria = CoresGO.rosa;
+      _corTextoCategoria = Colors.pinkAccent;
     else
       _corTextoCategoria = CoresGO.verde;
 

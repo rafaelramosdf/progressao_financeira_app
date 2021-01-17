@@ -5,12 +5,12 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progressao_financeira/controllers/lancamento.controller.dart';
 import 'package:progressao_financeira/models/enums/tipoLancamento.enum.dart';
+import 'package:progressao_financeira/views/tabs.view.dart';
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
 import 'package:progressao_financeira/widgets/datepicker/date_select.widget.dart';
-import 'package:progressao_financeira/widgets/icones/icones.widget.dart';
 
 class AlteracaoLancamentoView extends StatelessWidget {
-  final _controller = Get.find<LancamentoController>();
+  final _controller = Get.put(LancamentoController());
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +49,37 @@ class AlteracaoLancamentoView extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Icon(IconesGO.lancamentos),
+                child: GestureDetector(
+                  onTap: () => Get.defaultDialog(
+                    title: "Excluir?",
+                    content: Text("Deseja excluir este lançamento?"),
+                    textConfirm: "Sim",
+                    textCancel: "Não",
+                    confirmTextColor: Colors.white,
+                    onConfirm: () {
+                      _controller
+                          .excluirLancamento(
+                              lancamento: _controller.edicaoLancamento)
+                          .then((r) {
+                        if (r > 0) {
+                          _controller.initialTabIndex = 2;
+                          _controller.buscarLancamentos();
+                          Navigator.pop(context);
+                          Get.offAll(TabsView());
+                          Get.snackbar(
+                            "Sucesso!",
+                            "Lançamento excluído com sucesso!",
+                            backgroundColor: Colors.greenAccent,
+                          );
+                        }
+                      });
+                    },
+                    barrierDismissible: true,
+                  ),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Icon(Icons.delete),
+                  ),
                 ),
               ),
             ],
@@ -70,7 +98,7 @@ class AlteracaoLancamentoView extends StatelessWidget {
                           child: TextFormField(
                             controller: _valorController,
                             style: TextStyle(fontSize: 32.0),
-                            autofocus: true,
+                            autofocus: false,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.attach_money),
@@ -100,7 +128,7 @@ class AlteracaoLancamentoView extends StatelessWidget {
                               'Gastei',
                               style: TextStyle(
                                 color: CoresGO.rosa,
-                                fontSize: 18.0,
+                                fontSize: 14.0,
                               ),
                             ),
                             leading: Obx(
@@ -122,7 +150,7 @@ class AlteracaoLancamentoView extends StatelessWidget {
                               'Recebi',
                               style: TextStyle(
                                 color: Colors.green[700],
-                                fontSize: 18.0,
+                                fontSize: 14.0,
                               ),
                             ),
                             leading: Obx(

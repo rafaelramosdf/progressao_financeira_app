@@ -6,8 +6,8 @@ import 'package:progressao_financeira/widgets/backgrounds/fundo_degrade.widget.d
 import 'package:progressao_financeira/widgets/cards/card_lancamento.widget.dart';
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
 
-class LancamentoListView extends StatelessWidget {
-  final _controller = Get.find<LancamentoController>();
+class ListagemLancamentoView extends StatelessWidget {
+  final _controller = Get.put(LancamentoController());
 
   @override
   Widget build(BuildContext context) {

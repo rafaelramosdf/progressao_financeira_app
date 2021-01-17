@@ -10,7 +10,7 @@ import 'package:progressao_financeira/widgets/datepicker/date_select.widget.dart
 import 'package:progressao_financeira/widgets/icones/icones.widget.dart';
 
 class InclusaoLancamentoView extends StatelessWidget {
-  final _controller = Get.find<LancamentoController>();
+  final _controller = Get.put(LancamentoController());
 
   @override
   Widget build(BuildContext context) {

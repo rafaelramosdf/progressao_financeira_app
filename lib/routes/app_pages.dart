@@ -1,19 +1,14 @@
 import 'package:get/get.dart';
-import 'package:progressao_financeira/views/lancamentos/alteracao_lancamento.view.dart';
-import 'package:progressao_financeira/views/lancamentos/inclusao_lancamento.view.dart';
-import 'package:progressao_financeira/views/lancamentos/lancamento.list.view.dart';
-import 'package:progressao_financeira/views/resumo/resumo.view.dart';
+import 'package:progressao_financeira/views/lancamento/alteracao_lancamento.view.dart';
+import 'package:progressao_financeira/views/lancamento/inclusao_lancamento.view.dart';
+import 'package:progressao_financeira/views/tabs.view.dart';
 part './app_routes.dart';
 
 abstract class AppPages {
   static final pages = [
     GetPage(
       name: Routes.INITIAL,
-      page: () => ResumoView(),
-    ),
-    GetPage(
-      name: Routes.LANCAMENTO_LIST,
-      page: () => LancamentoListView(),
+      page: () => TabsView(),
     ),
     GetPage(
       name: Routes.LANCAMENTO_INCLUSAO,

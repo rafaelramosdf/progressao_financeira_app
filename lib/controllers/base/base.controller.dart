@@ -38,4 +38,8 @@ abstract class BaseController extends GetxController {
   final _carregando = false.obs;
   bool get carregando => this._carregando.value;
   set carregando(bool value) => this._carregando.value = value;
+
+  final _initialTabIndex = 0.obs;
+  int get initialTabIndex => this._initialTabIndex.value;
+  set initialTabIndex(int value) => this._initialTabIndex.value = value;
 }

@@ -55,6 +55,11 @@ class LancamentoController extends BaseController {
     return _repository.alterar(edicaoLancamento);
   }
 
+  Future<int> excluirLancamento({@required LancamentoEntity lancamento}) {
+    this.carregando = true;
+    return _repository.excluir(lancamento);
+  }
+
   void mudarFiltroAno({int ano}) {
     this.anoFiltro = ano;
     buscarLancamentos();

@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progressao_financeira/routes/app_pages.dart';
-import 'package:progressao_financeira/views/tabs.controller.dart';
+import 'package:progressao_financeira/views/tabs.view.dart';
 
 class App extends StatelessWidget {
   @override
@@ -17,7 +17,7 @@ class App extends StatelessWidget {
         primarySwatch: Colors.indigo,
         accentColor: Colors.pinkAccent[400],
       ),
-      home: TabsController(),
+      home: TabsView(),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

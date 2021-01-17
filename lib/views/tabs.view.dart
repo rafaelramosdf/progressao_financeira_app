@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progressao_financeira/controllers/lancamento.controller.dart';
-import 'package:progressao_financeira/views/lancamentos/inclusao_lancamento.view.dart';
-import 'package:progressao_financeira/views/lancamentos/lancamento.list.view.dart';
+import 'package:progressao_financeira/views/lancamento/inclusao_lancamento.view.dart';
+import 'package:progressao_financeira/views/lancamento/listagem_lancamento.view.dart';
 import 'package:progressao_financeira/views/progressao/progressao.view.dart';
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
 import 'package:progressao_financeira/widgets/icones/icones.widget.dart';
 import 'resumo/resumo.view.dart';
 
-class TabsController extends StatelessWidget {
+class TabsView extends StatelessWidget {
   final _controller = Get.put(LancamentoController());
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+      initialIndex: _controller.initialTabIndex,
       length: 3,
       child: Scaffold(
         appBar: AppBar(
@@ -85,7 +86,7 @@ class TabsController extends StatelessWidget {
           children: <Widget>[
             ResumoView(),
             ProgressaoView(),
-            LancamentoListView(),
+            ListagemLancamentoView(),
           ],
         ),
         floatingActionButton: FloatingActionButton(
