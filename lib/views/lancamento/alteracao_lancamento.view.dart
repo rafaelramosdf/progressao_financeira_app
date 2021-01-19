@@ -29,7 +29,7 @@ class AlteracaoLancamentoView extends StatelessWidget {
     _controller.tipoLancamento = _controller.edicaoLancamento.gasto
         ? TipoLancamentoEnum.despesa
         : TipoLancamentoEnum.receita;
-    _valorController.text = _controller.edicaoLancamento.valor;
+    _valorController.text = _controller.edicaoLancamento.valor.toString();
     _vencimentoController.text =
         new DateFormat.yMd().format(_controller.edicaoLancamento.data);
 
@@ -63,7 +63,7 @@ class AlteracaoLancamentoView extends StatelessWidget {
                           .then((r) {
                         if (r > 0) {
                           _controller.initialTabIndex = 2;
-                          _controller.buscarLancamentos();
+                          _controller.buscarLancamentosMes();
                           Navigator.pop(context);
                           Get.offAll(TabsView());
                           Get.snackbar(
@@ -267,7 +267,7 @@ class AlteracaoLancamentoView extends StatelessWidget {
               _formKey.currentState.save();
               _controller.salvarAlteracaoLancamento().then((r) {
                 if (r > 0) {
-                  _controller.buscarLancamentos();
+                  _controller.buscarLancamentosMes();
                   Navigator.pop(context);
                   Get.snackbar(
                     "Sucesso!",

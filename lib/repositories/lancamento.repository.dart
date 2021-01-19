@@ -54,15 +54,15 @@ class LancamentoRepository {
   // Listar Todos
   Future<List<LancamentoEntity>> listarTodos() async {
     final db = await Repository.instancia.banco;
-    var query = await db.query(tabelaLancamento);
+    var query = await db.query(tabelaLancamento, orderBy: "data desc");
     return query.map((m) => LancamentoEntity.fromJson(m)).toList();
   }
 
   Future<List<LancamentoEntity>> listarTodosPorAno(int ano) async {
     final db = await Repository.instancia.banco;
     var query = await db.query(tabelaLancamento,
-        where:
-            'date(data) >= date($ano-01-01) and date(data) <= date($ano-12-31)');
+        where: 'data >= "$ano-01-01" and data <= "$ano-12-31"',
+        orderBy: "data desc");
     return query.map((m) => LancamentoEntity.fromJson(m)).toList();
   }
 
@@ -73,15 +73,16 @@ class LancamentoRepository {
 
     if (mesSeguinte < 13) {
       queryMesSeguinte =
-          "date(data) < date($ano-${mesSeguinte.toString().padLeft(2, '0')}-01)";
+          'data < "$ano-${mesSeguinte.toString().padLeft(2, '0')}-01"';
     } else {
-      queryMesSeguinte = "date(data) < date($anoSeguinte-01-01)";
+      queryMesSeguinte = 'data < "$anoSeguinte-01-01"';
     }
 
     final db = await Repository.instancia.banco;
     var query = await db.query(tabelaLancamento,
         where:
-            'date(data) >= date($ano-${mes.toString().padLeft(2, '0')}-01) and $queryMesSeguinte');
+            'data >= "$ano-${mes.toString().padLeft(2, '0')}-01" and $queryMesSeguinte',
+        orderBy: "data desc");
 
     return query.map((m) => LancamentoEntity.fromJson(m)).toList();
   }

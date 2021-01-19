@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
+import 'package:progressao_financeira/models/entities/lancamento.entity.dart';
 import 'package:progressao_financeira/models/enums/tipoLancamento.enum.dart';
+import 'package:progressao_financeira/models/utils/extensions.util.dart';
 
 abstract class BaseController extends GetxController {
   final _dataAtual = DateTime.now().obs;
@@ -22,13 +24,21 @@ abstract class BaseController extends GetxController {
   double get totalGastoAno => this._totalGastoAno.value;
   set totalGastoAno(double value) => this._totalGastoAno.value = value;
 
-  var totalSaldoAno = 0.0;
+  final _totalSaldoAno = 0.0.obs;
+  double get totalSaldoAno => this._totalSaldoAno.value;
+  set totalSaldoAno(double value) => this._totalSaldoAno.value = value;
 
-  var totalRecebidoMes = 0.0;
+  final _totalRecebidoMes = 0.0.obs;
+  double get totalRecebidoMes => this._totalRecebidoMes.value;
+  set totalRecebidoMes(double value) => this._totalRecebidoMes.value = value;
 
-  var totalGastoMes = 0.0;
+  final _totalGastoMes = 0.0.obs;
+  double get totalGastoMes => this._totalGastoMes.value;
+  set totalGastoMes(double value) => this._totalGastoMes.value = value;
 
-  var totalSaldoMes = 0.0;
+  final _totalSaldoMes = 0.0.obs;
+  double get totalSaldoMes => this._totalSaldoMes.value;
+  set totalSaldoMes(double value) => this._totalSaldoMes.value = value;
 
   final _tipoLancamento = TipoLancamentoEnum.despesa.obs;
   TipoLancamentoEnum get tipoLancamento => this._tipoLancamento.value;
@@ -42,4 +52,37 @@ abstract class BaseController extends GetxController {
   final _initialTabIndex = 0.obs;
   int get initialTabIndex => this._initialTabIndex.value;
   set initialTabIndex(int value) => this._initialTabIndex.value = value;
+
+  void somarTotalizadores(List<LancamentoEntity> listaLancamentosAno) {
+    this.totalGastoAno = 0.0;
+    this.totalGastoMes = 0.0;
+    this.totalRecebidoAno = 0.0;
+    this.totalRecebidoMes = 0.0;
+    this.totalSaldoAno = 0.0;
+    this.totalSaldoMes = 0.0;
+
+    if (listaLancamentosAno != null && listaLancamentosAno.length > 0) {
+      var listaLancamentosMes = listaLancamentosAno
+          .where((m) => m.data.month == this.mesFiltro)
+          .toList();
+
+      listaLancamentosMes.forEach((m) {
+        if (m.gasto) {
+          this.totalGastoMes += m.valor.toDouble();
+        } else {
+          this.totalRecebidoMes += m.valor.toDouble();
+        }
+      });
+      this.totalSaldoMes = this.totalRecebidoMes - this.totalGastoMes;
+
+      listaLancamentosAno.forEach((m) {
+        if (m.gasto) {
+          this.totalGastoAno += m.valor.toDouble();
+        } else {
+          this.totalRecebidoAno += m.valor.toDouble();
+        }
+      });
+      this.totalSaldoAno = this.totalRecebidoAno - this.totalGastoAno;
+    }
+  }
 }

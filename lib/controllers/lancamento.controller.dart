@@ -8,20 +8,37 @@ import 'package:progressao_financeira/repositories/lancamento.repository.dart';
 class LancamentoController extends BaseController {
   final _repository = Get.put(LancamentoRepository());
 
-  List<LancamentoEntity> _listaLancamentos = List<LancamentoEntity>().obs;
-  List<LancamentoEntity> get listaLancamentos => this._listaLancamentos;
-  set listaLancamentos(List<LancamentoEntity> value) =>
-      this._listaLancamentos = value;
+  List<LancamentoEntity> _listaLancamentosAno = List<LancamentoEntity>().obs;
+  List<LancamentoEntity> get listaLancamentosAno => this._listaLancamentosAno;
+  set listaLancamentosAno(List<LancamentoEntity> value) {
+    this._listaLancamentosAno = value;
+    this.somarTotalizadores(this._listaLancamentosAno);
+  }
+
+  List<LancamentoEntity> _listaLancamentosMes = List<LancamentoEntity>().obs;
+  List<LancamentoEntity> get listaLancamentosMes => this._listaLancamentosMes;
+  set listaLancamentosMes(List<LancamentoEntity> value) {
+    this._listaLancamentosMes = value;
+    this.somarTotalizadores(this._listaLancamentosMes);
+  }
 
   final _edicaoLancamento = LancamentoEntity().obs;
   LancamentoEntity get edicaoLancamento => this._edicaoLancamento.value;
   set edicaoLancamento(LancamentoEntity value) =>
       this._edicaoLancamento.value = value;
 
-  void buscarLancamentos() {
+  void buscarLancamentosAno() {
     this.carregando = true;
-    _repository.listarTodos().then((r) {
-      listaLancamentos = r;
+    _repository.listarTodosPorAno(this.anoFiltro).then((r) {
+      listaLancamentosAno = r;
+      this.carregando = false;
+    });
+  }
+
+  void buscarLancamentosMes() {
+    this.carregando = true;
+    _repository.listarTodosPorMes(this.anoFiltro, this.mesFiltro).then((r) {
+      listaLancamentosMes = r;
       this.carregando = false;
     });
   }
@@ -37,7 +54,7 @@ class LancamentoController extends BaseController {
       pago: false,
       parcelado: false,
       parcelas: 1,
-      valor: "",
+      valor: "0,00",
     );
   }
 
@@ -62,11 +79,12 @@ class LancamentoController extends BaseController {
 
   void mudarFiltroAno({int ano}) {
     this.anoFiltro = ano;
-    buscarLancamentos();
+    buscarLancamentosAno();
+    buscarLancamentosMes();
   }
 
   void mudarFiltroMes({int mes}) {
     this.mesFiltro = mes;
-    buscarLancamentos();
+    buscarLancamentosMes();
   }
 }
