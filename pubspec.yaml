@@ -28,6 +28,7 @@ dependencies:
   path_provider: any
   flutter_masked_text: ^0.8.0
   intl: any
+  flutter_typeahead: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
+import 'package:progressao_financeira/models/objects/progressao.object.dart';
 
 class CardResumoGO extends StatelessWidget {
-  final String titulo;
-  CardResumoGO({this.titulo});
+  final ProgressaoObject resumoMes;
+
+  CardResumoGO({
+    this.resumoMes,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class CardResumoGO extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    titulo,
+                    this.resumoMes.mes,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: CoresGO.cinza,
@@ -64,7 +68,7 @@ class CardResumoGO extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    "R\$ 50.500,00",
+                    "R\$ ${this.resumoMes.totalRecebido}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: CoresGO.verde,
@@ -75,7 +79,7 @@ class CardResumoGO extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "R\$ 30.000,00",
+                    "R\$ ${this.resumoMes.totalGasto}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: CoresGO.rosa,
@@ -86,7 +90,7 @@ class CardResumoGO extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "R\$ 20.500,00",
+                    "R\$ ${this.resumoMes.totalSaldo}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: CoresGO.azul,

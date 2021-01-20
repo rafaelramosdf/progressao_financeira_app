@@ -10,10 +10,12 @@ import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
 class ListagemLancamentoView extends StatelessWidget {
   final _controller = Get.put(LancamentoController());
 
+  ListagemLancamentoView() {
+    this._controller.buscarLancamentos();
+  }
+
   @override
   Widget build(BuildContext context) {
-    _controller.buscarLancamentosMes();
-
     return FundoDegradeGO(
       child: Obx(
         () => _controller.carregando
@@ -71,7 +73,7 @@ class ListagemLancamentoView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "${_controller.totalRecebidoMes}",
+                                _controller.totalRecebidoMes.toString(),
                                 style: TextStyle(
                                   color: CoresGO.verde,
                                   fontSize: 16.0,
@@ -93,7 +95,7 @@ class ListagemLancamentoView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "${_controller.totalGastoMes}",
+                                _controller.totalGastoMes.toString(),
                                 style: TextStyle(
                                   color: CoresGO.rosa,
                                   fontSize: 16.0,
@@ -115,7 +117,7 @@ class ListagemLancamentoView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "${_controller.totalSaldoMes}",
+                                _controller.totalSaldoMes.toString(),
                                 style: TextStyle(
                                   color: CoresGO.branco,
                                   fontSize: 16.0,

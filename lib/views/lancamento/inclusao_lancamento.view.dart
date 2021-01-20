@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progressao_financeira/controllers/lancamento.controller.dart';
@@ -144,54 +145,6 @@ class InclusaoLancamentoView extends StatelessWidget {
                       children: <Widget>[
                         Expanded(
                           child: TextFormField(
-                            controller: _categoriaController,
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.label),
-                              border: OutlineInputBorder(),
-                              hintText: "Categoria...",
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty)
-                                return "Informe a categoria!";
-                              else
-                                return null;
-                            },
-                            onSaved: (value) {
-                              _controller.edicaoLancamento.categoria = value;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.0),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: TextFormField(
-                            controller: _contaController,
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.account_balance),
-                              border: OutlineInputBorder(),
-                              hintText: "Conta...",
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty)
-                                return "Informe a conta!";
-                              else
-                                return null;
-                            },
-                            onSaved: (value) {
-                              _controller.edicaoLancamento.conta = value;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.0),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: TextFormField(
                             controller: _vencimentoController,
                             readOnly: true,
                             decoration: InputDecoration(
@@ -206,6 +159,101 @@ class InclusaoLancamentoView extends StatelessWidget {
                                   new DateFormat.yMd().format(date);
                               _controller.edicaoLancamento.data = date;
                             },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TypeAheadFormField(
+                            textFieldConfiguration: TextFieldConfiguration(
+                              controller: _categoriaController,
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.label),
+                                border: OutlineInputBorder(),
+                                hintText: "Categoria...",
+                              ),
+                            ),
+                            suggestionsCallback: (pattern) {
+                              return [
+                                "Água / Luz",
+                                "Aluguel / Moradia",
+                                "Cartão de Crédito",
+                                "Despesa Avulsa",
+                                "Financiamento / Empréstimo",
+                                "Internet / Telefone / TV",
+                                "Rendda Extra",
+                                "Salário",
+                                "",
+                              ];
+                            },
+                            itemBuilder: (context, suggestion) {
+                              return ListTile(
+                                title: Text(suggestion),
+                              );
+                            },
+                            transitionBuilder:
+                                (context, suggestionsBox, controller) {
+                              return suggestionsBox;
+                            },
+                            onSuggestionSelected: (suggestion) {
+                              _categoriaController.text = suggestion;
+                            },
+                            validator: (value) {
+                              if (value.isEmpty)
+                                return "Informe a categoria!";
+                              else
+                                return null;
+                            },
+                            onSaved: (value) =>
+                                _controller.edicaoLancamento.categoria = value,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TypeAheadFormField(
+                            textFieldConfiguration: TextFieldConfiguration(
+                              controller: _contaController,
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.account_balance),
+                                border: OutlineInputBorder(),
+                                hintText: "Conta...",
+                              ),
+                            ),
+                            suggestionsCallback: (pattern) {
+                              return [
+                                "Carteira",
+                                "Conta Corrente",
+                                "Poupança",
+                                "",
+                              ];
+                            },
+                            itemBuilder: (context, suggestion) {
+                              return ListTile(
+                                title: Text(suggestion),
+                              );
+                            },
+                            transitionBuilder:
+                                (context, suggestionsBox, controller) {
+                              return suggestionsBox;
+                            },
+                            onSuggestionSelected: (suggestion) {
+                              _contaController.text = suggestion;
+                            },
+                            validator: (value) {
+                              if (value.isEmpty)
+                                return "Informe a conta!";
+                              else
+                                return null;
+                            },
+                            onSaved: (value) =>
+                                _controller.edicaoLancamento.conta = value,
                           ),
                         ),
                       ],
@@ -239,7 +287,7 @@ class InclusaoLancamentoView extends StatelessWidget {
               _formKey.currentState.save();
               _controller.salvarNovoLancamento().then((r) {
                 if (r > 0) {
-                  _controller.buscarLancamentosMes();
+                  _controller.buscarLancamentos();
                   Navigator.pop(context);
                   Get.snackbar(
                     "Sucesso!",

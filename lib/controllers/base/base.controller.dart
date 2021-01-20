@@ -62,26 +62,19 @@ abstract class BaseController extends GetxController {
     this.totalSaldoMes = 0.0;
 
     if (listaLancamentosAno != null && listaLancamentosAno.length > 0) {
-      var listaLancamentosMes = listaLancamentosAno
-          .where((m) => m.data.month == this.mesFiltro)
-          .toList();
-
-      listaLancamentosMes.forEach((m) {
-        if (m.gasto) {
-          this.totalGastoMes += m.valor.toDouble();
-        } else {
-          this.totalRecebidoMes += m.valor.toDouble();
-        }
-      });
-      this.totalSaldoMes = this.totalRecebidoMes - this.totalGastoMes;
-
       listaLancamentosAno.forEach((m) {
         if (m.gasto) {
+          if (m.data.month == this.mesFiltro)
+            this.totalGastoMes += m.valor.toDouble();
           this.totalGastoAno += m.valor.toDouble();
         } else {
+          if (m.data.month == this.mesFiltro)
+            this.totalRecebidoMes += m.valor.toDouble();
           this.totalRecebidoAno += m.valor.toDouble();
         }
       });
+
+      this.totalSaldoMes = this.totalRecebidoMes - this.totalGastoMes;
       this.totalSaldoAno = this.totalRecebidoAno - this.totalGastoAno;
     }
   }

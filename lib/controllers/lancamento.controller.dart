@@ -4,6 +4,7 @@ import 'package:progressao_financeira/controllers/base/base.controller.dart';
 import 'package:progressao_financeira/models/entities/lancamento.entity.dart';
 import 'package:progressao_financeira/models/utils/uuid.util.dart';
 import 'package:progressao_financeira/repositories/lancamento.repository.dart';
+import 'package:progressao_financeira/models/objects/progressao.object.dart';
 
 class LancamentoController extends BaseController {
   final _repository = Get.put(LancamentoRepository());
@@ -13,32 +14,37 @@ class LancamentoController extends BaseController {
   set listaLancamentosAno(List<LancamentoEntity> value) {
     this._listaLancamentosAno = value;
     this.somarTotalizadores(this._listaLancamentosAno);
+    this._listaProgressao = ProgressaoObject.obterListaProgressao(
+        this._listaLancamentosAno, this.anoFiltro);
   }
 
   List<LancamentoEntity> _listaLancamentosMes = List<LancamentoEntity>().obs;
   List<LancamentoEntity> get listaLancamentosMes => this._listaLancamentosMes;
   set listaLancamentosMes(List<LancamentoEntity> value) {
     this._listaLancamentosMes = value;
-    this.somarTotalizadores(this._listaLancamentosMes);
   }
+
+  List<ProgressaoObject> _listaProgressao = List<ProgressaoObject>().obs;
+  List<ProgressaoObject> get listaProgressao => this._listaProgressao;
 
   final _edicaoLancamento = LancamentoEntity().obs;
   LancamentoEntity get edicaoLancamento => this._edicaoLancamento.value;
   set edicaoLancamento(LancamentoEntity value) =>
       this._edicaoLancamento.value = value;
 
-  void buscarLancamentosAno() {
+  void buscarLancamentos() {
     this.carregando = true;
-    _repository.listarTodosPorAno(this.anoFiltro).then((r) {
-      listaLancamentosAno = r;
-      this.carregando = false;
-    });
-  }
 
-  void buscarLancamentosMes() {
-    this.carregando = true;
-    _repository.listarTodosPorMes(this.anoFiltro, this.mesFiltro).then((r) {
-      listaLancamentosMes = r;
+    _repository.listarTodosPorAno(this.anoFiltro).then((r) {
+      listaLancamentosAno = new List<LancamentoEntity>();
+      listaLancamentosMes = new List<LancamentoEntity>();
+
+      if (r != null && r.length > 0) {
+        listaLancamentosAno = r;
+        listaLancamentosMes =
+            r.where((m) => m.data.month == this.mesFiltro).toList();
+      }
+
       this.carregando = false;
     });
   }
@@ -46,8 +52,8 @@ class LancamentoController extends BaseController {
   void novoLancamento() {
     edicaoLancamento = LancamentoEntity(
       id: Uuid().generateV4(),
-      categoria: "Despesa Avulsa",
-      conta: "Conta Corrente",
+      categoria: "",
+      conta: "",
       data: DateTime.now(),
       descricao: "",
       gasto: true,
@@ -79,12 +85,11 @@ class LancamentoController extends BaseController {
 
   void mudarFiltroAno({int ano}) {
     this.anoFiltro = ano;
-    buscarLancamentosAno();
-    buscarLancamentosMes();
+    buscarLancamentos();
   }
 
   void mudarFiltroMes({int mes}) {
     this.mesFiltro = mes;
-    buscarLancamentosMes();
+    buscarLancamentos();
   }
 }
