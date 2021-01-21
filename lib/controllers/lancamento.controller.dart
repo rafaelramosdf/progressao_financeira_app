@@ -58,15 +58,46 @@ class LancamentoController extends BaseController {
       descricao: "",
       gasto: true,
       pago: false,
-      parcelado: false,
-      parcelas: 1,
+      codigoParcelamento: "",
+      quantidadeParcelas: 1,
+      parcela: 1,
       valor: "0,00",
     );
   }
 
   Future<int> salvarNovoLancamento() {
     this.carregando = true;
-    return _repository.inserir(edicaoLancamento);
+
+    if (edicaoLancamento.quantidadeParcelas > 1) {
+      var parcelasLancamentos = new List<LancamentoEntity>();
+      edicaoLancamento.codigoParcelamento = edicaoLancamento.id;
+      parcelasLancamentos.add(edicaoLancamento);
+
+      var mesParcela = edicaoLancamento.data.month;
+
+      for (var i = 2; i <= edicaoLancamento.quantidadeParcelas; i++) {
+        mesParcela++;
+
+        parcelasLancamentos.add(new LancamentoEntity(
+          categoria: edicaoLancamento.categoria,
+          codigoParcelamento: edicaoLancamento.id,
+          conta: edicaoLancamento.conta,
+          data: new DateTime(edicaoLancamento.data.year, mesParcela,
+              edicaoLancamento.data.day),
+          descricao: edicaoLancamento.descricao,
+          gasto: edicaoLancamento.gasto,
+          id: Uuid().generateV4(),
+          pago: edicaoLancamento.pago,
+          quantidadeParcelas: edicaoLancamento.quantidadeParcelas,
+          parcela: i,
+          valor: edicaoLancamento.valor,
+        ));
+      }
+
+      return _repository.inserirLista(parcelasLancamentos);
+    } else {
+      return _repository.inserir(edicaoLancamento);
+    }
   }
 
   void editarLancamento({@required LancamentoEntity lancamento}) {

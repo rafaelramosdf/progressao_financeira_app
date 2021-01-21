@@ -72,12 +72,12 @@ class TabsView extends StatelessWidget {
                 text: "Resumo",
               ),
               Tab(
-                icon: Icon(IconesGO.progressao),
-                text: "Progressão",
-              ),
-              Tab(
                 icon: Icon(IconesGO.lancamentos),
                 text: "Lançamentos",
+              ),
+              Tab(
+                icon: Icon(IconesGO.progressao),
+                text: "Progressão",
               ),
             ],
           ),
@@ -85,8 +85,8 @@ class TabsView extends StatelessWidget {
         body: TabBarView(
           children: <Widget>[
             ResumoView(),
-            ProgressaoView(),
             ListagemLancamentoView(),
+            ProgressaoView(),
           ],
         ),
         floatingActionButton: FloatingActionButton(

@@ -15,8 +15,9 @@ class LancamentoRepository {
       "conta TEXT,"
       "data TEXT,"
       "descricao TEXT,"
-      "parcelado INTEGER NOT NULL DEFAULT 0,"
-      "parcelas INTEGER NOT NULL DEFAULT 0,"
+      "codigoParcelamento TEXT,"
+      "quantidadeParcelas INTEGER NOT NULL DEFAULT 1,"
+      "parcela INTEGER NOT NULL DEFAULT 1,"
       "pago INTEGER NOT NULL DEFAULT 0"
       ")";
 
@@ -88,11 +89,12 @@ class LancamentoRepository {
   }
 
   // Inserir Lista
-  inserirLista(List<LancamentoEntity> lista) async {
+  Future<int> inserirLista(List<LancamentoEntity> lista) async {
+    Future<int> resultado;
     final db = await Repository.instancia.banco;
     lista.forEach((m) async {
-      var resultado = await db.insert(tabelaLancamento, m.toJson());
-      print('Lancamento: ${m.id} = $resultado');
+      resultado = db.insert(tabelaLancamento, m.toJson());
     });
+    return resultado;
   }
 }

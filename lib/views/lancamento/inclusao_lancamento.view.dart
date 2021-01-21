@@ -23,10 +23,13 @@ class InclusaoLancamentoView extends StatelessWidget {
     TextEditingController _contaController = new TextEditingController();
     TextEditingController _vencimentoController = new TextEditingController();
     TextEditingController _descricaoController = new TextEditingController();
+    TextEditingController _parcelasController = new TextEditingController();
 
     _categoriaController.text = _controller.edicaoLancamento.categoria;
     _contaController.text = _controller.edicaoLancamento.conta;
     _descricaoController.text = _controller.edicaoLancamento.descricao;
+    _parcelasController.text =
+        _controller.edicaoLancamento.quantidadeParcelas.toString();
     _controller.tipoLancamento = _controller.edicaoLancamento.gasto
         ? TipoLancamentoEnum.despesa
         : TipoLancamentoEnum.receita;
@@ -271,6 +274,36 @@ class InclusaoLancamentoView extends StatelessWidget {
                             ),
                             onSaved: (value) {
                               _controller.edicaoLancamento.descricao = value;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextFormField(
+                            controller: _parcelasController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.repeat),
+                              prefix: Text(
+                                  "${_controller.edicaoLancamento.parcela.toString()} / "),
+                              border: OutlineInputBorder(),
+                              hintText: "",
+                            ),
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  int.tryParse(value) == 0)
+                                return "Informe a parcela!";
+                              else
+                                return null;
+                            },
+                            onSaved: (value) {
+                              _controller.edicaoLancamento.quantidadeParcelas =
+                                  int.tryParse(value);
                             },
                           ),
                         ),

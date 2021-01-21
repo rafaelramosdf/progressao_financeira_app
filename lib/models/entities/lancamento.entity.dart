@@ -15,8 +15,9 @@ class LancamentoEntity {
   String conta;
   DateTime data;
   String descricao;
-  bool parcelado;
-  int parcelas;
+  String codigoParcelamento;
+  int quantidadeParcelas;
+  int parcela;
   bool pago;
 
   LancamentoEntity({
@@ -27,8 +28,9 @@ class LancamentoEntity {
     this.conta,
     this.data,
     this.descricao,
-    this.parcelado,
-    this.parcelas,
+    this.codigoParcelamento,
+    this.quantidadeParcelas,
+    this.parcela,
     this.pago,
   }) : this.id = id ?? Uuid().generateV4();
 
@@ -41,8 +43,9 @@ class LancamentoEntity {
         conta: json["conta"],
         data: DateTime.parse(json["data"]),
         descricao: json["descricao"],
-        parcelado: json["parcelado"] > 0,
-        parcelas: json["parcelas"],
+        codigoParcelamento: json["codigoParcelamento"],
+        quantidadeParcelas: json["quantidadeParcelas"],
+        parcela: json["parcela"],
         pago: json["pago"] > 0,
       );
 
@@ -55,8 +58,9 @@ class LancamentoEntity {
         "data":
             "${data.year.toString().padLeft(4, '0')}-${data.month.toString().padLeft(2, '0')}-${data.day.toString().padLeft(2, '0')}",
         "descricao": descricao,
-        "parcelado": parcelado ? 1 : 0,
-        "parcelas": parcelas,
+        "codigoParcelamento": codigoParcelamento,
+        "quantidadeParcelas": quantidadeParcelas,
+        "parcela": parcela,
         "pago": pago ? 1 : 0,
       };
 }
