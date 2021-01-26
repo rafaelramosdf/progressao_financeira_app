@@ -19,36 +19,37 @@ class BarraProgressoGO extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        Container(
+          width: 60.0,
+          child: Text(
+            titulo,
+            style: TextStyle(
+              color: corTitulo,
+            ),
+            textAlign: TextAlign.left,
+          ),
+        ),
         Expanded(
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Stack(
                 children: [
                   Container(
+                    width: 250.0,
                     height: _height,
                     color: Colors.grey.withOpacity(0.1),
                   ),
                   AnimatedContainer(
                     height: _height,
-                    width: ((progresso / constraints.maxWidth) / 100) *
-                        constraints.maxWidth,
+                    width: progresso / 250.0,
                     color: corBarra,
-                    duration: Duration(milliseconds: 300),
+                    duration: Duration(milliseconds: 400),
                   ),
                 ],
               );
             },
           ),
         ),
-        Container(
-          margin: EdgeInsets.only(left: 8.0),
-          child: Text(
-            titulo,
-            style: TextStyle(
-              color: corTitulo,
-            ),
-          ),
-        )
       ],
     );
   }

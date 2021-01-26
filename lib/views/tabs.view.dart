@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:progressao_financeira/blocs/lancamento.bloc.dart';
-import 'package:progressao_financeira/models/enums/tipoAcao.enum.dart';
-import 'package:progressao_financeira/views/lancamentos/lancamento.list.view.dart';
+import 'package:get/get.dart';
+import 'package:progressao_financeira/controllers/lancamento.controller.dart';
+import 'package:progressao_financeira/views/lancamento/inclusao_lancamento.view.dart';
+import 'package:progressao_financeira/views/lancamento/listagem_lancamento.view.dart';
 import 'package:progressao_financeira/views/progressao/progressao.view.dart';
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
 import 'package:progressao_financeira/widgets/icones/icones.widget.dart';
-import 'package:provider/provider.dart';
-
-import 'lancamentos/lancamento.form.view.dart';
 import 'resumo/resumo.view.dart';
 
-class TabsController extends StatelessWidget {
+class TabsView extends StatelessWidget {
+  final _controller = Get.put(LancamentoController());
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+      initialIndex: _controller.initialTabIndex,
       length: 3,
       child: Scaffold(
         appBar: AppBar(
@@ -32,20 +33,19 @@ class TabsController extends StatelessWidget {
                 ),
                 flex: 8,
               ),
-              Expanded(
-                child: Consumer<LancamentoBloc>(
-                  builder: (context, lancamentoBloc, child) =>
-                      PopupMenuButton<int>(
-                    initialValue: lancamentoBloc.anoFiltro,
+              Obx(
+                () => Expanded(
+                  child: PopupMenuButton<int>(
+                    initialValue: _controller.anoFiltro,
                     child: Text(
-                      "${lancamentoBloc.anoFiltro}",
+                      "${_controller.anoFiltro}",
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                       ),
                       textAlign: TextAlign.right,
                     ),
                     onSelected: (int ano) {
-                      lancamentoBloc.mudarFiltroAno(ano: ano);
+                      _controller.mudarFiltroAno(ano: ano);
                     },
                     itemBuilder: (BuildContext context) =>
                         <PopupMenuEntry<int>>[
@@ -60,8 +60,8 @@ class TabsController extends StatelessWidget {
                           child: Text("${DateTime.now().year + 1}")),
                     ],
                   ),
+                  flex: 2,
                 ),
-                flex: 2,
               ),
             ],
           ),
@@ -72,12 +72,12 @@ class TabsController extends StatelessWidget {
                 text: "Resumo",
               ),
               Tab(
-                icon: Icon(IconesGO.progressao),
-                text: "Progressão",
-              ),
-              Tab(
                 icon: Icon(IconesGO.lancamentos),
                 text: "Lançamentos",
+              ),
+              Tab(
+                icon: Icon(IconesGO.progressao),
+                text: "Progressão",
               ),
             ],
           ),
@@ -85,21 +85,14 @@ class TabsController extends StatelessWidget {
         body: TabBarView(
           children: <Widget>[
             ResumoView(),
+            ListagemLancamentoView(),
             ProgressaoView(),
-            LancamentoListView(),
           ],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Provider.of<LancamentoBloc>(context, listen: false)
-                .novoLancamento();
-            Navigator.push(
-              context,
-              new MaterialPageRoute(
-                builder: (context) =>
-                    LancamentoFormView(acao: TipoAcaoEnum.incluir),
-              ),
-            );
+            _controller.novoLancamento();
+            Get.to(InclusaoLancamentoView());
           },
           tooltip: 'Adicionar Despesa / Receita',
           child: Icon(Icons.add),

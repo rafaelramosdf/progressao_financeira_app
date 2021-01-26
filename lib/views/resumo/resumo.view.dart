@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:progressao_financeira/controllers/lancamento.controller.dart';
 import 'package:progressao_financeira/widgets/backgrounds/fundo_degrade.widget.dart';
 import 'package:progressao_financeira/widgets/barra_progresso/barra_progresso.widget.dart';
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
+import 'package:progressao_financeira/models/utils/extensions.util.dart';
 
 class ResumoView extends StatelessWidget {
+  final _controller = Get.put(LancamentoController());
+
+  ResumoView() {
+    _controller.buscarLancamentos();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FundoDegradeGO(
@@ -27,7 +36,7 @@ class ResumoView extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Saldo Atual",
+                          "Saldo do Ano",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: CoresGO.azulClaro,
@@ -35,23 +44,35 @@ class ResumoView extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 15.0),
-                        BarraProgressoGO(
-                          corBarra: CoresGO.verde,
-                          progresso: 30000.0,
-                          titulo: "Ganhos",
-                          corTitulo: CoresGO.azulClaro,
+                        Obx(
+                          () => BarraProgressoGO(
+                            corBarra: CoresGO.verde,
+                            progresso: _controller.totalRecebidoAno > 0.0
+                                ? _controller.totalRecebidoAno
+                                : 0.0,
+                            titulo: "Ganhos",
+                            corTitulo: CoresGO.azulClaro,
+                          ),
                         ),
-                        BarraProgressoGO(
-                          corBarra: CoresGO.rosa,
-                          progresso: 20000.0,
-                          titulo: "Gastos",
-                          corTitulo: CoresGO.azulClaro,
+                        Obx(
+                          () => BarraProgressoGO(
+                            corBarra: CoresGO.rosa,
+                            progresso: _controller.totalGastoAno > 0.0
+                                ? _controller.totalGastoAno
+                                : 0.0,
+                            titulo: "Gastos",
+                            corTitulo: CoresGO.azulClaro,
+                          ),
                         ),
-                        BarraProgressoGO(
-                          corBarra: CoresGO.azul,
-                          progresso: 10000.0,
-                          titulo: "Saldo",
-                          corTitulo: CoresGO.azulClaro,
+                        Obx(
+                          () => BarraProgressoGO(
+                            corBarra: CoresGO.azul,
+                            progresso: _controller.totalSaldoAno > 0.0
+                                ? _controller.totalSaldoAno
+                                : 0.0,
+                            titulo: "Saldo",
+                            corTitulo: CoresGO.azulClaro,
+                          ),
                         ),
                         SizedBox(height: 10.0),
                       ],
@@ -82,13 +103,15 @@ class ResumoView extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                          child: Text(
-                            "R\$ 30.000,00",
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              color: CoresGO.verdeClaro,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
+                          child: Obx(
+                            () => Text(
+                              "${_controller.totalRecebidoAno.formatToCurrencyString()}",
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                color: CoresGO.verdeClaro,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
                           ),
                         ),
@@ -120,13 +143,15 @@ class ResumoView extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                          child: Text(
-                            "R\$ 20.000,00",
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              color: CoresGO.rosaClaro,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
+                          child: Obx(
+                            () => Text(
+                              "${_controller.totalGastoAno.formatToCurrencyString()}",
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                color: CoresGO.rosaClaro,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
                           ),
                         ),
@@ -158,13 +183,15 @@ class ResumoView extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                          child: Text(
-                            "R\$ 10.000,00",
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              color: CoresGO.branco,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
+                          child: Obx(
+                            () => Text(
+                              "${_controller.totalSaldoAno.formatToCurrencyString()}",
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                color: CoresGO.branco,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
                           ),
                         ),
