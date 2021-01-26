@@ -11,7 +11,6 @@
 - Arquitetura MVC.
 
 <br>
-<br>
 
 <strong>Descrição e Funcionalidades do App</strong>:
 <br>
@@ -21,7 +20,7 @@ Aplicativo desenvolvido para uso pessoal, e para o público em geral, que deseja
 <br>
 <br>
 
-O App possiu as seguintes funcionalidades:
+O App possui as seguintes funcionalidades:
 - Gestão e Controle Financeiro Pessoal, simples e fácil.
 - Tela de Resumo e Progressão, para visualização ampla do orçamento do Ano.
 - Cadastro de lançamentos de receitas e despesas.
