@@ -16,7 +16,7 @@
 <br>
 <br>
 
-Aplicativo desenvolvido para uso pessoal, e para o público em geral, que deseja anotar suas despesas e receitas do ano, de forma simples e rápida.
+Aplicativo desenvolvido para uso pessoal, e para o público em geral, que deseja anotar suas despesas e receitas do ano, de forma simples e prática.
 <br>
 <br>
 
