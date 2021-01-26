@@ -54,32 +54,63 @@ class AlteracaoLancamentoView extends StatelessWidget {
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () => Get.defaultDialog(
-                    title: "Excluir?",
-                    content: Text("Deseja excluir este lançamento?"),
-                    textConfirm: "Sim",
-                    textCancel: "Não",
-                    confirmTextColor: Colors.white,
-                    onConfirm: () {
-                      _controller
-                          .excluirLancamento(
-                              lancamento: _controller.edicaoLancamento)
-                          .then((r) {
-                        if (r > 0) {
-                          _controller.initialTabIndex = 1;
-                          _controller.buscarLancamentos();
-                          Navigator.pop(context);
-                          Get.offAll(TabsView());
-                          Get.snackbar(
-                            "Sucesso!",
-                            "Lançamento excluído com sucesso!",
-                            backgroundColor: Colors.greenAccent,
-                          );
-                        }
-                      });
-                    },
-                    barrierDismissible: true,
-                  ),
+                  onTap: () => _controller
+                          .edicaoLancamento.codigoParcelamento.isBlank
+                      ? Get.defaultDialog(
+                          title: "Excluir?",
+                          content: Text("Deseja excluir este lançamento?"),
+                          textConfirm: "Sim",
+                          textCancel: "Não",
+                          confirmTextColor: Colors.white,
+                          onConfirm: () {
+                            this.excluirLancamento(context);
+                          },
+                          barrierDismissible: true,
+                        )
+                      : Get.defaultDialog(
+                          title: "Excluir?",
+                          content: Text(
+                              "Este lançamento faz parte de um parcelamento. Como deseja excluir?"),
+                          actions: [
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text("Não excluir"),
+                              color: Colors.grey,
+                              textColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0)),
+                              ),
+                            ),
+                            FlatButton(
+                              onPressed: () {
+                                this.excluirLancamento(context);
+                              },
+                              child: Text("Excluir somente este"),
+                              color: Colors.pink,
+                              textColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0)),
+                              ),
+                            ),
+                            FlatButton(
+                              onPressed: () {
+                                this.excluirLancamentoTodasParcelas(context);
+                              },
+                              child: Text("Excluir todas as parcelas"),
+                              color: Colors.pink,
+                              textColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0)),
+                              ),
+                            ),
+                          ],
+                          barrierDismissible: true,
+                        ),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Icon(Icons.delete),
@@ -363,5 +394,44 @@ class AlteracaoLancamentoView extends StatelessWidget {
           tooltip: 'Salvar Despesa / Receita',
           child: Icon(Icons.save),
         ));
+  }
+
+  void montarRetornoExclusao(bool excluidoComSucesso) {
+    if (excluidoComSucesso) {
+      Get.snackbar(
+        "Sucesso!",
+        "Lançamento excluído com sucesso!",
+        backgroundColor: Colors.greenAccent,
+      );
+    } else {
+      Get.snackbar(
+        "Erro!",
+        "Não foi possível excluir este lançamento!",
+        backgroundColor: Colors.greenAccent,
+      );
+    }
+  }
+
+  void excluirLancamento(BuildContext context) {
+    _controller
+        .excluirLancamento(lancamento: _controller.edicaoLancamento)
+        .then((r) {
+      _controller.initialTabIndex = 1;
+      Navigator.pop(context);
+      Get.offAll(TabsView());
+      montarRetornoExclusao(r > 0);
+    });
+  }
+
+  void excluirLancamentoTodasParcelas(BuildContext context) {
+    _controller
+        .excluirLancamentoTodasParcelas(
+            lancamento: _controller.edicaoLancamento)
+        .then((r) {
+      _controller.initialTabIndex = 1;
+      Navigator.pop(context);
+      Get.offAll(TabsView());
+      montarRetornoExclusao(r > 0);
+    });
   }
 }

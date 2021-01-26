@@ -33,19 +33,19 @@ class LancamentoController extends BaseController {
       this._edicaoLancamento.value = value;
 
   void buscarLancamentos() {
-    this.carregando = true;
+    carregando = true;
 
-    _repository.listarTodosPorAno(this.anoFiltro).then((r) {
+    _repository.listarTodosPorAno(anoFiltro).then((r) {
       listaLancamentosAno = new List<LancamentoEntity>();
       listaLancamentosMes = new List<LancamentoEntity>();
 
       if (r != null && r.length > 0) {
         listaLancamentosAno = r;
         listaLancamentosMes =
-            r.where((m) => m.data.month == this.mesFiltro).toList();
+            r.where((m) => m.data.month == mesFiltro).toList();
       }
 
-      this.carregando = false;
+      carregando = false;
     });
   }
 
@@ -66,7 +66,7 @@ class LancamentoController extends BaseController {
   }
 
   Future<int> salvarNovoLancamento() {
-    this.carregando = true;
+    carregando = true;
 
     if (edicaoLancamento.quantidadeParcelas > 1) {
       var parcelasLancamentos = new List<LancamentoEntity>();
@@ -105,22 +105,30 @@ class LancamentoController extends BaseController {
   }
 
   Future<int> salvarAlteracaoLancamento() {
-    this.carregando = true;
+    carregando = true;
     return _repository.alterar(edicaoLancamento);
   }
 
   Future<int> excluirLancamento({@required LancamentoEntity lancamento}) {
-    this.carregando = true;
+    carregando = true;
     return _repository.excluir(lancamento);
   }
 
+  Future<int> excluirLancamentoTodasParcelas(
+      {@required LancamentoEntity lancamento}) async {
+    carregando = true;
+    var lista = await _repository
+        .listarTodosPorCodigoParcelamento(lancamento.codigoParcelamento);
+    return _repository.excluirLista(lista);
+  }
+
   void mudarFiltroAno({int ano}) {
-    this.anoFiltro = ano;
+    anoFiltro = ano;
     buscarLancamentos();
   }
 
   void mudarFiltroMes({int mes}) {
-    this.mesFiltro = mes;
+    mesFiltro = mes;
     buscarLancamentos();
   }
 }

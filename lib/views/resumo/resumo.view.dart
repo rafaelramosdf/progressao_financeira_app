@@ -4,6 +4,7 @@ import 'package:progressao_financeira/controllers/lancamento.controller.dart';
 import 'package:progressao_financeira/widgets/backgrounds/fundo_degrade.widget.dart';
 import 'package:progressao_financeira/widgets/barra_progresso/barra_progresso.widget.dart';
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
+import 'package:progressao_financeira/models/utils/extensions.util.dart';
 
 class ResumoView extends StatelessWidget {
   final _controller = Get.put(LancamentoController());
@@ -46,7 +47,9 @@ class ResumoView extends StatelessWidget {
                         Obx(
                           () => BarraProgressoGO(
                             corBarra: CoresGO.verde,
-                            progresso: _controller.totalRecebidoAno,
+                            progresso: _controller.totalRecebidoAno > 0.0
+                                ? _controller.totalRecebidoAno
+                                : 0.0,
                             titulo: "Ganhos",
                             corTitulo: CoresGO.azulClaro,
                           ),
@@ -54,7 +57,9 @@ class ResumoView extends StatelessWidget {
                         Obx(
                           () => BarraProgressoGO(
                             corBarra: CoresGO.rosa,
-                            progresso: _controller.totalGastoAno,
+                            progresso: _controller.totalGastoAno > 0.0
+                                ? _controller.totalGastoAno
+                                : 0.0,
                             titulo: "Gastos",
                             corTitulo: CoresGO.azulClaro,
                           ),
@@ -62,7 +67,9 @@ class ResumoView extends StatelessWidget {
                         Obx(
                           () => BarraProgressoGO(
                             corBarra: CoresGO.azul,
-                            progresso: _controller.totalSaldoAno,
+                            progresso: _controller.totalSaldoAno > 0.0
+                                ? _controller.totalSaldoAno
+                                : 0.0,
                             titulo: "Saldo",
                             corTitulo: CoresGO.azulClaro,
                           ),
@@ -98,7 +105,7 @@ class ResumoView extends StatelessWidget {
                         Expanded(
                           child: Obx(
                             () => Text(
-                              "R\$ ${_controller.totalRecebidoAno}",
+                              "${_controller.totalRecebidoAno.formatToCurrencyString()}",
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                 color: CoresGO.verdeClaro,
@@ -138,7 +145,7 @@ class ResumoView extends StatelessWidget {
                         Expanded(
                           child: Obx(
                             () => Text(
-                              "R\$ ${_controller.totalGastoAno}",
+                              "${_controller.totalGastoAno.formatToCurrencyString()}",
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                 color: CoresGO.rosaClaro,
@@ -178,7 +185,7 @@ class ResumoView extends StatelessWidget {
                         Expanded(
                           child: Obx(
                             () => Text(
-                              "R\$ ${_controller.totalSaldoAno}",
+                              "${_controller.totalSaldoAno.formatToCurrencyString()}",
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                 color: CoresGO.branco,

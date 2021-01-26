@@ -6,6 +6,7 @@ import 'package:progressao_financeira/models/entities/lancamento.entity.dart';
 import 'package:progressao_financeira/widgets/backgrounds/fundo_degrade.widget.dart';
 import 'package:progressao_financeira/widgets/cards/card_lancamento.widget.dart';
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
+import 'package:progressao_financeira/models/utils/extensions.util.dart';
 
 class ListagemLancamentoView extends StatelessWidget {
   final _controller = Get.put(LancamentoController());
@@ -73,7 +74,8 @@ class ListagemLancamentoView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                _controller.totalRecebidoMes.toString(),
+                                _controller.totalRecebidoMes
+                                    .formatToCurrencyString(hiddenSymbol: true),
                                 style: TextStyle(
                                   color: CoresGO.verde,
                                   fontSize: 16.0,
@@ -95,7 +97,8 @@ class ListagemLancamentoView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                _controller.totalGastoMes.toString(),
+                                _controller.totalGastoMes
+                                    .formatToCurrencyString(hiddenSymbol: true),
                                 style: TextStyle(
                                   color: CoresGO.rosa,
                                   fontSize: 16.0,
@@ -117,7 +120,8 @@ class ListagemLancamentoView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                _controller.totalSaldoMes.toString(),
+                                _controller.totalSaldoMes
+                                    .formatToCurrencyString(hiddenSymbol: true),
                                 style: TextStyle(
                                   color: CoresGO.branco,
                                   fontSize: 16.0,

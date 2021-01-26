@@ -94,7 +94,7 @@ class _CardLancamentoGOState extends State<CardLancamentoGO> {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      widget.lancamento.valor.toString(),
+                      widget.lancamento.valor,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16.0,

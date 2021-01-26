@@ -27,6 +27,15 @@ class LancamentoRepository {
     return db.insert(tabelaLancamento, lancamentoModel.toJson());
   }
 
+  Future<int> inserirLista(List<LancamentoEntity> lista) async {
+    Future<int> resultado;
+    final db = await Repository.instancia.banco;
+    lista.forEach((m) async {
+      resultado = db.insert(tabelaLancamento, m.toJson());
+    });
+    return resultado;
+  }
+
   // Alterar
   Future<int> alterar(LancamentoEntity lancamentoModel) async {
     final db = await Repository.instancia.banco;
@@ -41,6 +50,16 @@ class LancamentoRepository {
         where: 'id = ?', whereArgs: [lancamentoModel.id]);
   }
 
+  Future<int> excluirLista(List<LancamentoEntity> lista) async {
+    Future<int> resultado;
+    final db = await Repository.instancia.banco;
+    lista.forEach((m) async {
+      resultado =
+          db.delete(tabelaLancamento, where: 'id = ?', whereArgs: [m.id]);
+    });
+    return resultado;
+  }
+
   // Listar
   Future<LancamentoEntity> listar(String id) async {
     final db = await Repository.instancia.banco;
@@ -52,7 +71,6 @@ class LancamentoRepository {
     return null;
   }
 
-  // Listar Todos
   Future<List<LancamentoEntity>> listarTodos() async {
     final db = await Repository.instancia.banco;
     var query = await db.query(tabelaLancamento, orderBy: "data desc");
@@ -88,13 +106,12 @@ class LancamentoRepository {
     return query.map((m) => LancamentoEntity.fromJson(m)).toList();
   }
 
-  // Inserir Lista
-  Future<int> inserirLista(List<LancamentoEntity> lista) async {
-    Future<int> resultado;
+  Future<List<LancamentoEntity>> listarTodosPorCodigoParcelamento(
+    String codigoParcelamento,
+  ) async {
     final db = await Repository.instancia.banco;
-    lista.forEach((m) async {
-      resultado = db.insert(tabelaLancamento, m.toJson());
-    });
-    return resultado;
+    var query = await db.query(tabelaLancamento,
+        where: 'codigoParcelamento = "$codigoParcelamento"', orderBy: "data");
+    return query.map((m) => LancamentoEntity.fromJson(m)).toList();
   }
 }

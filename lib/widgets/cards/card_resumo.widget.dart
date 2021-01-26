@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progressao_financeira/widgets/cores/cores.widget.dart';
 import 'package:progressao_financeira/models/objects/progressao.object.dart';
+import 'package:progressao_financeira/models/utils/extensions.util.dart';
 
 class CardResumoGO extends StatelessWidget {
   final ProgressaoObject resumoMes;
@@ -68,7 +69,7 @@ class CardResumoGO extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    "R\$ ${this.resumoMes.totalRecebido}",
+                    "${this.resumoMes.totalRecebido.formatToCurrencyString(hiddenSymbol: true)}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: CoresGO.verde,
@@ -79,7 +80,7 @@ class CardResumoGO extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "R\$ ${this.resumoMes.totalGasto}",
+                    "${this.resumoMes.totalGasto.formatToCurrencyString(hiddenSymbol: true)}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: CoresGO.rosa,
@@ -90,7 +91,7 @@ class CardResumoGO extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "R\$ ${this.resumoMes.totalSaldo}",
+                    "${this.resumoMes.totalSaldo.formatToCurrencyString(hiddenSymbol: true)}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: CoresGO.azul,
