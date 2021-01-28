@@ -3,11 +3,11 @@
 <strong>Tecnologias Utilizadas</strong>:
 - Flutter + Dart.
 - GetX:
-  - Injeção de Dependências.
+  - Injeção de Dependência.
   - Gestão de Estado.
   - Rotas Nomeadas.
 - Padrão "Repository".
-- Bando de Dados SQLite.
+- Banco de Dados SQLite.
 - Arquitetura MVC.
 
 <br>
