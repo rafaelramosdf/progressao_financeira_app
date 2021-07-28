@@ -172,6 +172,8 @@ class BarChartSample2State extends State<BarChartSample2> {
                                 return 'St';
                               case 6:
                                 return 'Sn';
+                              default:
+                                return '';
                             }
                           },
                         ),
@@ -277,5 +279,11 @@ class BarChartSample2State extends State<BarChartSample2> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    barTouchedResultStreamController.close();
+    super.dispose();
   }
 }

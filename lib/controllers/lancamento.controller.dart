@@ -9,8 +9,15 @@ import 'package:progressao_financeira/models/objects/progressao.object.dart';
 class LancamentoController extends BaseController {
   final _repository = Get.put(LancamentoRepository());
 
-  List<LancamentoEntity> _listaLancamentosAno = List<LancamentoEntity>().obs;
+  List<LancamentoEntity> _listaLancamentosAno = <LancamentoEntity>[].obs;
   List<LancamentoEntity> get listaLancamentosAno => this._listaLancamentosAno;
+
+  List<ProgressaoObject> _listaProgressao = <ProgressaoObject>[].obs;
+  List<ProgressaoObject> get listaProgressao => this._listaProgressao;
+
+  List<LancamentoEntity> _listaLancamentosMes = <LancamentoEntity>[].obs;
+  List<LancamentoEntity> get listaLancamentosMes => this._listaLancamentosMes;
+
   set listaLancamentosAno(List<LancamentoEntity> value) {
     this._listaLancamentosAno = value;
     this.somarTotalizadores(this._listaLancamentosAno);
@@ -18,14 +25,9 @@ class LancamentoController extends BaseController {
         this._listaLancamentosAno, this.anoFiltro);
   }
 
-  List<LancamentoEntity> _listaLancamentosMes = List<LancamentoEntity>().obs;
-  List<LancamentoEntity> get listaLancamentosMes => this._listaLancamentosMes;
   set listaLancamentosMes(List<LancamentoEntity> value) {
     this._listaLancamentosMes = value;
   }
-
-  List<ProgressaoObject> _listaProgressao = List<ProgressaoObject>().obs;
-  List<ProgressaoObject> get listaProgressao => this._listaProgressao;
 
   final _edicaoLancamento = LancamentoEntity().obs;
   LancamentoEntity get edicaoLancamento => this._edicaoLancamento.value;
@@ -36,8 +38,8 @@ class LancamentoController extends BaseController {
     carregando = true;
 
     _repository.listarTodosPorAno(anoFiltro).then((r) {
-      listaLancamentosAno = new List<LancamentoEntity>();
-      listaLancamentosMes = new List<LancamentoEntity>();
+      listaLancamentosAno = new List<LancamentoEntity>.empty(growable: true);
+      listaLancamentosMes = new List<LancamentoEntity>.empty(growable: true);
 
       if (r != null && r.length > 0) {
         listaLancamentosAno = r;
@@ -69,7 +71,8 @@ class LancamentoController extends BaseController {
     carregando = true;
 
     if (edicaoLancamento.quantidadeParcelas > 1) {
-      var parcelasLancamentos = new List<LancamentoEntity>();
+      var parcelasLancamentos =
+          new List<LancamentoEntity>.empty(growable: true);
       edicaoLancamento.codigoParcelamento = edicaoLancamento.id;
       parcelasLancamentos.add(edicaoLancamento);
 

@@ -72,40 +72,52 @@ class AlteracaoLancamentoView extends StatelessWidget {
                           content: Text(
                               "Este lançamento faz parte de um parcelamento. Como deseja excluir?"),
                           actions: [
-                            FlatButton(
+                            ElevatedButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
                               child: Text("Não excluir"),
-                              color: Colors.grey,
-                              textColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15.0)),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.grey,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
+                                ),
                               ),
                             ),
-                            FlatButton(
+                            ElevatedButton(
                               onPressed: () {
                                 this.excluirLancamento(context);
                               },
                               child: Text("Excluir somente este"),
-                              color: Colors.pink,
-                              textColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15.0)),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.pink,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
+                                ),
                               ),
                             ),
-                            FlatButton(
+                            ElevatedButton(
                               onPressed: () {
                                 this.excluirLancamentoTodasParcelas(context);
                               },
                               child: Text("Excluir todas as parcelas"),
-                              color: Colors.pink,
-                              textColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15.0)),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.pink,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
+                                ),
                               ),
                             ),
                           ],

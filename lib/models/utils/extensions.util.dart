@@ -19,7 +19,7 @@ extension DoubleToCurrencyString on double {
     if (this != null) {
       return formatCurrency.format(this);
     } else {
-      formatCurrency.format(0.0);
+      return formatCurrency.format(0.0);
     }
   }
 }

@@ -23,7 +23,7 @@ class ProgressaoObject {
 
   static List<ProgressaoObject> obterListaProgressao(
       List<LancamentoEntity> listaLancamentos, int ano) {
-    var listaProgressao = new List<ProgressaoObject>();
+    var listaProgressao = <ProgressaoObject>[];
     for (var mes = 1; mes <= 12; mes++) {
       var recebido = 0.0;
       var gasto = 0.0;
